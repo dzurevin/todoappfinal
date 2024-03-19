@@ -1,59 +1,61 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import '../style.css'
+	let todoitem = '';
+	let todolist = [];
+
+	function addToArray() {
+		if (todoitem == '') {
+			return;
+		}
+		todolist = [...todolist, {
+			text: todoitem,
+			done: false
+		}];
+		console.log(todolist);
+		todoitem = '';
+	}
+
+
+
+	function removeThis(index){
+		todolist.splice(index, 1);
+		todolist = todolist;
+	}
+
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<h1>To Do List Ferda!</h1>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
+<form on:submit|preventDefault={addToArray}>
+	<input type="text" bind:value={todoitem}>
+	<button type="submit">Add</button>
+</form>
 
-		to your new<br />SvelteKit app
-	</h1>
+<ul>
+	{#each todolist as item, index}
+		<li>
+			<input type="checkbox" bind:checked={item.done}>
+			<span class:done={item.done} >{item.text}</span>
+			<span on:click={() => removeThis(index)} class="remove" role="button" tabindex="0">&times;</span>
+		</li>
+	{/each}
+</ul>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
+	<style>
+		ul {
+			list-style: none;
+		}
+		li{
+			font-size: 1.3rem;
+		}
+		.done {
+			color: grey;
+			text-decoration: line-through;
+		}
+		.remove{
+			color: darkred;
+			cursor:pointer;
+		}
 
-	<Counter />
-</section>
+	</style>
 
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
