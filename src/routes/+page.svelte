@@ -1,10 +1,13 @@
 <svelte:head>
-   
+	<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.amber.min.css"
+/>
 </svelte:head>
 
 <script>
 
-     import '@picocss/pico'
+     //import '@picocss/pico'
      import '../style.css'
      
     let toDoList = []; // array of To Dos
@@ -26,22 +29,22 @@
 </script>
 
 
-<article data-theme="dark"></article>
+<div class="main">
 
 
 
 
-<div style="margin: 0 auto; padding-top: 5em; width: 700px;">
+<div style="margin: 0 auto; padding-top: 5em; width: 75vw;">
     <h2 style="text-align: center;">To Do List</h2>
-    <p>Enter your upcoming commitments here</p>
-    <div style="display: flex; margin: 0;">
-        <input style="margin: 0; width: 35em;" type="text" bind:value={textInput}>
-        <button style="margin-left: 1em; width: 11em;" on:click={addToDo}>Add</button>
+    <p>Enter your upcoming commitments here:</p>
+    <div class="inputAndAddButton" style="display: flex; margin: 0;">
+        <input style="margin: 0;" type="text" bind:value={textInput}>
+        <button style="margin-left: 1em; margin-right:0; width: 11em;" on:click={addToDo}>Add</button>
     </div>
 </div>
 
 {#each toDoList as toDo, i}
-    <div style="display: flex; align-items: baseline; width: 700px; margin: 0 auto; margin-top: 1em;">
+    <div style="display: flex; align-items: baseline; width: 75vw; margin: 0 auto; margin-top: 1em;">
         {#if toDo.editing}
             <input type="text" bind:value={toDo.content}>
         {:else}
@@ -73,7 +76,7 @@
 
 
 
-
+</div>
 
 
 
