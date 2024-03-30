@@ -1,31 +1,50 @@
 <svelte:head>
-	<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.amber.min.css"
-/> 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.amber.min.css"/> 
 </svelte:head>
 
 <script>
 
      //import '@picocss/pico'
      import '../style.css'
+	import { writable } from 'svelte/store';
      
-    let toDoList = []; // array of To Dos
-    let textInput = "";
+	let toDoList = writable([]); // array of To Dos
+     let textInput = "";
+	let storedList;
 
-    function addToDo() {
-        toDoList = [...toDoList, { content: textInput, editing: false, checked: false }]
-        
-    }
+	if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+		storedList = localStorage.getItem('storedList');
+		if(storedList) {
+			$toDoList = (JSON.parse(storedList));
+		}
+	}
 
-    function setEditing(i, isEditing) {
-        toDoList[i].editing = isEditing; 
-    }
+	function updateList() {
+		return storedList = localStorage.setItem('storedList', JSON.stringify($toDoList));
+	}
 
-    function deleteTodo(i) {
-        toDoList.splice(i, 1);
-        toDoList = toDoList; 
-    }
+
+     function addToDo() {
+        $toDoList = [...$toDoList, { content: textInput, editing: false, checked: false }];
+
+	   //New
+        updateList();
+     }
+
+     function setEditing(i, isEditing) {
+        $toDoList[i].editing = isEditing; 
+
+	   //New
+        updateList();
+     }
+
+     function deleteTodo(i) {
+        $toDoList.splice(i, 1);
+        $toDoList = $toDoList; 
+
+	   //New
+        updateList();
+     }
 </script>
 
 
@@ -43,7 +62,7 @@
     </div>
 </div>
 
-{#each toDoList as toDo, i}
+{#each $toDoList as toDo, i}
     <div style="display: flex; align-items: baseline; width: 75vw; margin: 0 auto; margin-top: 1em;">
         {#if toDo.editing}
             <input type="text" bind:value={toDo.content}>
