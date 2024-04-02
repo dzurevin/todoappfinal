@@ -4,6 +4,11 @@
 
 <script>
 
+	//importing transitions
+	import { fly } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
+
+
      //import '@picocss/pico'
      import '../style.css'
 	import { writable } from 'svelte/store';
@@ -125,7 +130,7 @@
             {#if toDo.editing}
                 <button style="margin-left: 0.7em;" on:click={() => setEditing(i, false)}>Save</button>
             {:else}
-                <button style="margin-left: 0.7em;" on:click={() => setEditing(i, true)}>Edit</button>
+                <button transition:fly={{ delay: 250, duration: 300, x: 100, y: 500, opacity: 0.5, easing: quintOut }} style="margin-left: 0.7em;" on:click={() => setEditing(i, true)}>Edit</button>
             {/if}
             <button style="margin-left: 0.7em;" on:click={() => deleteTodo(i)}>Delete</button>
         </div>
