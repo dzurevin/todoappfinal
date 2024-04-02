@@ -1,3 +1,5 @@
+
+
 <svelte:head>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.amber.min.css"/> 
 </svelte:head>
@@ -8,6 +10,14 @@
 	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 
+
+	let darkMode = false;
+	function toggle() {
+        darkMode = !darkMode;
+        window.document.body.classList.toggle('dark');
+    }
+
+	
 
      //import '@picocss/pico'
      import '../style.css'
@@ -107,9 +117,15 @@
 <div class="main">
 
 
+	<button style="margin: 1em;" on:click={toggle}>
+		{#if darkMode }
+			Go Blue
+		{:else}
+			Go Pink
+		{/if}
+	</button>
 
-
-<div style="margin: 0 auto; padding-top: 5em; width: 75vw;">
+<div style="margin: 0 auto; padding-top: 2em; width: 75vw;">
     <h2 style="text-align: center;">To Do List</h2>
     <p>Enter your upcoming commitments here:</p>
     <div class="inputAndAddButton" style="display: flex; margin: 0;">
@@ -156,8 +172,23 @@
 
 
 
+<style>
+	:root{
+		--bg-color: rgb(113, 204, 216);
+		--text-color: #000000;
+	}
+	
+	:global(body) {
+		background: var(--bg-color);
+		color: var(--text-color);
+	}
+	
+	:global(body.dark) {
+		--bg-color: #e393d6;
+		--text-color: #ff8dec;
+	}
 
-
+</style>
 <!-- 
 
 

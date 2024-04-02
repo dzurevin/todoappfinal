@@ -1,5 +1,12 @@
 html {
-     background-color: rgb(113, 204, 216);     
+    background-color: rgb(113, 204, 216);   
+   
+}
+
+
+
+body{
+     height: 100vw;
 }
 
 
@@ -9,15 +16,18 @@ html {
 
 
 
+@media only screen and (max-width: 1160px) {
+     body{
+          height:300vw;
+     }
+   }
 
 
-
-
-
-
-
-
-
+   @media only screen and (max-width: 965px) {
+     body{
+          height:900vw;
+     }
+   }
 
 
 
