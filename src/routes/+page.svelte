@@ -9,16 +9,15 @@
 	//importing transitions
 	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+	import { fade } from 'svelte/transition';
+	import { blur } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
+	import { scale } from 'svelte/transition';
 
 
-	let darkMode = false;
-	function toggle() {
-        darkMode = !darkMode;
-        window.document.body.classList.toggle('dark');
-    }
 
 	
-
+//FUNCTIONALITY
      //import '@picocss/pico'
      import '../style.css'
 	import { writable } from 'svelte/store';
@@ -27,103 +26,96 @@
      let textInput = "";
 	let storedList;
 
+
+
+
+
+
+
+
+
+
+
+
+
+//DARK AND LIGHT MODE
+let darkMode = 1;
+	function toggle() {
+        darkMode = 1 - darkMode;
+        window.document.body.classList.toggle('dark');
+	   console.log(darkMode);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
 		storedList = localStorage.getItem('storedList');
 		if(storedList) {
 			$toDoList = (JSON.parse(storedList));
+			
 		}
 	}
 
 	function updateList() {
 		return storedList = localStorage.setItem('storedList', JSON.stringify($toDoList));
 	}
-
-
      function addToDo() {
         $toDoList = [...$toDoList, { content: textInput, editing: false, checked: false }];
-
 	   //New
         updateList();
      }
-
      function setEditing(i, isEditing) {
         $toDoList[i].editing = isEditing; 
-
 	   //New
         updateList();
      }
-
      function deleteTodo(i) {
         $toDoList.splice(i, 1);
         $toDoList = $toDoList; 
-
 	   //New
         updateList();
      }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
 </script>
 
 
 <div class="main">
 
 
+
+
+	
 	<button style="margin: 1em;" on:click={toggle}>
-		{#if darkMode }
+		{#if darkMode == 1 }
 			Go Blue
 		{:else}
 			Go Pink
 		{/if}
 	</button>
+
+
+
+
+
+
+
+
+
 
 <div style="margin: 0 auto; padding-top: 2em; width: 75vw;">
     <h2 style="text-align: center;">To Do List</h2>
@@ -135,18 +127,18 @@
 </div>
 
 {#each $toDoList as toDo, i}
-    <div style="display: flex; align-items: baseline; width: 75vw; margin: 0 auto; margin-top: 1em;">
+    <div transition:blur={{ amount: 10 }} style="display: flex; align-items: baseline; width: 75vw; margin: 0 auto; margin-top: 1em;">
         {#if toDo.editing}
             <input type="text" bind:value={toDo.content}>
         {:else}
-            <input type="checkbox" bind:checked={toDo.checked}>
+            <input transition:blur={{ amount: 10 }} type="checkbox" bind:checked={toDo.checked}>
             <h4 style="flex-grow: 1;">{toDo.content}</h4>
         {/if}
         <div style="display: flex">
             {#if toDo.editing}
                 <button style="margin-left: 0.7em;" on:click={() => setEditing(i, false)}>Save</button>
             {:else}
-                <button transition:fly={{ delay: 250, duration: 300, x: 100, y: 500, opacity: 0.5, easing: quintOut }} style="margin-left: 0.7em;" on:click={() => setEditing(i, true)}>Edit</button>
+                <button style="margin-left: 0.7em;" on:click={() => setEditing(i, true)}>Edit</button>
             {/if}
             <button style="margin-left: 0.7em;" on:click={() => deleteTodo(i)}>Delete</button>
         </div>
@@ -156,15 +148,6 @@
 <div id="footer-container">
      <footer id="footer"></footer>
 </div>
-
-
-
-
-
-
-
-
-
 
 
 </div>
