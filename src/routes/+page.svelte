@@ -24,7 +24,7 @@
      
 	let toDoList = writable([]); // array of To Dos
      let textInput = "";
-	let storedList;
+	let storedList, savedMode, darkMode;
 
 
 
@@ -39,9 +39,12 @@
 
 
 //DARK AND LIGHT MODE
-let darkMode = 1;
+
+
+
 	function toggle() {
-        darkMode = 1 - darkMode;
+        darkMode = !darkMode;
+	   localStorage.setItem('savedMode', darkMode);
         window.document.body.classList.toggle('dark');
 	   console.log(darkMode);
     }
@@ -63,9 +66,16 @@ let darkMode = 1;
 
 	if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
 		storedList = localStorage.getItem('storedList');
+		savedMode = localStorage.getItem('savedMode');
 		if(storedList) {
 			$toDoList = (JSON.parse(storedList));
-			
+		}
+		if (savedMode && savedMode === 'true') {
+			darkMode = true;
+			window.document.body.classList.add('dark');
+		}
+		else {
+			darkMode = false;
 		}
 	}
 
@@ -101,7 +111,7 @@ let darkMode = 1;
 
 	
 	<button style="margin: 1em;" on:click={toggle}>
-		{#if darkMode == 1 }
+		{#if darkMode}
 			Go Blue
 		{:else}
 			Go Pink
