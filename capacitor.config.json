@@ -1,0 +1,8 @@
+{
+  "appId": "com.digitallydrew.todo",
+  "appName": "To Do",
+  "webDir": "build",
+  "server": {
+    "androidScheme": "https"
+  }
+}
